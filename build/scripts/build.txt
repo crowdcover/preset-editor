@@ -1,0 +1,17 @@
+
+main.js
+----------------
+jquery.js
+underscore.js
+backbone.js
+backbone/wreqr.js
+backbone/babysitter.js
+marionette.js
+bootstrap.js
+text.js
+text!templates/searchView._
+views/searchView.js
+core/controller.js
+core/router.js
+app.js
+main.js
