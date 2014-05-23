@@ -1,1 +1,7 @@
-<button type="button" class="btn btn-primary" id="add">Add New Preset</button>
+<div class="row search">
+  <input type="text" class="form-control" id="searchPreset" placeholder="Search">
+</div>
+
+<div class="row">
+  <button type="button" class="btn btn-primary" id="add">Add New Preset</button>
+</div>

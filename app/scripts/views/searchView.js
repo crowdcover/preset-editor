@@ -1,10 +1,12 @@
 define([
     'backbone',
     'marionette',
-    'text!templates/searchView._'
-],
+    'text!templates/searchView._',
+    'app',
+    'typeahead'
+    ],
 
-    function (Backbone, Marionette, searchViewTemplate) {
+    function (Backbone, Marionette, searchViewTemplate, app, typeahead) {
 
         return Backbone.Marionette.ItemView.extend({
 
@@ -18,10 +20,33 @@ define([
                 'click #add': 'addPreset'
             },
 
-            initialize: function () {},
+            initialize: function () {
+            },
+
+            ui: {
+                'searchPreset': '#searchPreset'
+            },
 
             onRender: function () {
-                // instantiate typeahead.
+
+                // Instantiate Bloodhound.
+                var preset = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: $.map(app.collections.presets.models, function(preset) { return { value: preset.attributes.name }; })
+                });
+
+                preset.initialize();
+
+                this.ui.searchPreset.typeahead({
+                    hint: 'true',
+                    minLenght: 1
+                },
+                {
+                    name: 'preset',
+                    displayKey: 'value',
+                    source: preset.ttAdapter()
+                });
             },
 
             onClose: function () {
@@ -30,7 +55,7 @@ define([
 
             addPreset: function () {
                 console.log('adding a preset');
-                console.log(this.model.get('geometry'));
+                console.log(app.collections.presets);
             }
 
         });

@@ -10,8 +10,11 @@ marionette.js
 bootstrap.js
 text.js
 text!templates/searchView._
+typeahead.js
 views/searchView.js
+models/preset.js
 core/controller.js
 core/router.js
+collections/presets.js
 app.js
 main.js
