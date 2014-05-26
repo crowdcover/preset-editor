@@ -1,6 +1,6 @@
 define([
-	'backbone',
-	'require',
+    'backbone',
+    'require',
     'marionette'
 ],
 
@@ -13,12 +13,14 @@ function (Backbone, require, Marionette) {
         onClose: function () {},
 
         index: function () {
-        	require(['views/searchView', 'models/preset', 'app'], function (SearchView, Preset, app) {
-                var preset = new Preset();
-        		var view = new SearchView({model: preset});
-        		app.mainRegion.show(view);
-        	});
+            require(['views/searchView', 'models/preset', 'app'],
+                function (SearchView, Preset, app) {
+                    var preset = new Preset();
+                    var view = new SearchView({model: preset});
+                    app.mainRegion.show(view);
+                });
         }
 
     });
 });
+

@@ -1,12 +1,11 @@
 define([
-  'backbone',
-  'models/preset'
-  ],
+    'backbone',
+    'models/preset'
+],
 
-  function(Backbone, Preset) {
+function (Backbone, Preset) {
     var Presets = Backbone.Collection.extend({
-      model: Preset
+        model: Preset
     });
-
     return Presets;
-  });
+});
