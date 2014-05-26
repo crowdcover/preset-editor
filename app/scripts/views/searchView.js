@@ -28,17 +28,30 @@ function (Backbone, Marionette, _, searchViewTemplate, app, typeahead) {
             'searchPreset': '#searchPreset'
         },
 
-        onRender: function () {
+            onRender: function () {
 
-            // Instantiate Bloodhound.
-            var preset = new Bloodhound({
-                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                local: $.map(app.collections.presets.models, function (preset) {
-                    return { value: preset.attributes.name };
-                })
-            });
+                // Instantiate Bloodhound.
+                var preset = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    local: $.map(app.collections.presets.models, function(preset) { return { value: preset.attributes.name }; })
+                });
 
+                preset.initialize();
+
+                this.ui.searchPreset.typeahead({
+                    hint: 'true',
+                    minLenght: 1
+                },
+                {
+                    name: 'preset',
+                    displayKey: 'value',
+                    source: preset.ttAdapter()
+                });
+
+                this.ui.searchPreset.on('typeahead:selected', function(event, datum) {
+                  console.log(datum);
+                });
             preset.initialize();
 
             this.ui.searchPreset.typeahead({
@@ -51,7 +64,6 @@ function (Backbone, Marionette, _, searchViewTemplate, app, typeahead) {
                 source: preset.ttAdapter()
             });
         },
-
         onClose: function () {
         // clear stuff like typeahead.
         },
