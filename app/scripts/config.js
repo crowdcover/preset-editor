@@ -8,6 +8,7 @@ requirejs.config({
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap.min',
         text: '../bower_components/requirejs-text/text',
         typeahead: '../bower_components/typeahead.js/dist/typeahead.bundle',
+        osmauth: '../bower_components/osmauth/osmauth.min',
         'backbone.wreqr' : '../bower_components/backbone.wreqr/lib/amd/backbone.wreqr',
         'backbone.babysitter' : '../bower_components/backbone.babysitter/lib/amd/backbone.babysitter',
         // templates: 'templates/compiled',
@@ -27,6 +28,9 @@ requirejs.config({
         typeahead: {
             deps: ['bootstrap'],
             exports: '$'
+        },
+        osmauth: {
+            exports: 'osmauth'
         }
     }
 });

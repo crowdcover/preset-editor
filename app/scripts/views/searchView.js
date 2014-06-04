@@ -4,29 +4,26 @@ define([
     'underscore',
     'text!templates/searchView._',
     'app',
-    'typeahead'
-    ],
+    'typeahead',
+    'core/connection'
+],
 
-function (Backbone, Marionette, _, searchViewTemplate, app, typeahead) {
+    function (Backbone, Marionette, _, searchViewTemplate, app, typeahead, connection) {
 
-    return Backbone.Marionette.ItemView.extend({
+        return Backbone.Marionette.ItemView.extend({
 
-        template: _.template(searchViewTemplate),
+            template: _.template(searchViewTemplate),
 
-        templateHelpers: function () {
-            return this.model.get('geometry');
-        },
+            events: {
+                'click #add': 'addPreset'
+            },
 
-        events: {
-            'click #add': 'addPreset'
-        },
+            initialize: function () {
+            },
 
-        initialize: function () {
-        },
-
-        ui: {
-            'searchPreset': '#searchPreset'
-        },
+            ui: {
+                'searchPreset': '#searchPreset'
+            },
 
             onRender: function () {
 
@@ -49,29 +46,42 @@ function (Backbone, Marionette, _, searchViewTemplate, app, typeahead) {
                     source: preset.ttAdapter()
                 });
 
-                this.ui.searchPreset.on('typeahead:selected', function(event, datum) {
-                  console.log(datum);
+                this.ui.searchPreset.on('typeahead:selected', function (event, datum) {
+                    console.log(datum);
                 });
-            preset.initialize();
+                
+                preset.initialize();
 
-            this.ui.searchPreset.typeahead({
-                hint: 'true',
-                minLenght: 1
+                this.ui.searchPreset.typeahead({
+                    hint: 'true',
+                    minLenght: 1
+                },
+                {
+                    name: 'preset',
+                    displayKey: 'value',
+                    source: preset.ttAdapter()
+                });
             },
-            {
-                name: 'preset',
-                displayKey: 'value',
-                source: preset.ttAdapter()
-            });
-        },
-        onClose: function () {
-        // clear stuff like typeahead.
-        },
+            onClose: function () {
+                // clear stuff like typeahead.
+            },
 
-        addPreset: function () {
-            console.log('adding a preset');
-            console.log(app.collections.presets);
-        }
+            addPreset: function () {
+                // console.log('adding a preset');
+                // console.log(app.collections.presets);
+                // console.log(connection);
+                connection.xhr({
+                    method: 'GET',
+                    path: '/api/0.6/user/details'
+                }, function (err, details) {
 
-    });
+                    // details is an XML DOM of user details
+                    console.log(details);
+                    console.log(connection.authenticated());
+                });
+
+                Backbone.history.navigate('add', {trigger: true});
+            }
+
+        });
 });
