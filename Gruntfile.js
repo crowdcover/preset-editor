@@ -191,6 +191,7 @@ module.exports = function (grunt) {
             }
         },
         // Put files not handled in other tasks here
+
         copy: {
             dist: {
                 files: [{
@@ -203,6 +204,7 @@ module.exports = function (grunt) {
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
                         'styles/fonts/*',
+                        '*.html',
                         'bower_components/requirejs/*.js',
                         'bower_components/bootstrap/dist/**',
                     ]

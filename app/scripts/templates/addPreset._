@@ -5,6 +5,7 @@
             <option></option>
             <option value='tag'>Tag</option>
             <option value='radio'>Radio</option>
+            <option value='text'>Text</option>
         </select>
       </div>
 </div>
