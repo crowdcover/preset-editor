@@ -1,0 +1,33 @@
+<div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <input type="text" class="form-control" placeholder="Name" value='<%= name %>'>
+        <select id='tagSelect' class="form-control">
+            <option></option>
+            <option value='tag'>Tag</option>
+            <option value='textarea'>Text</option>
+            <option value='radio'>Radio</option>
+            <option value='combo'>Combo</option>
+            <option value='check'>Check</option>
+        </select>
+      </div>
+</div>
+<div class="row" id="preview">
+    <table class="table">
+        <tbody>
+            <% for (tag in tags) { if (tags.hasOwnProperty(tag)) { %>
+            <tr>
+                <td>Tag</td>
+                <td> <%= tag %> </td>
+                <td><button type="button" class="btn btn-primary editTag">Edit</button>
+            </tr>
+            <% } } %>
+            <% for (var i=0; i< fields.length; i++) { %>
+            <tr>
+                <td>Field</td>
+                <td> <%= fields[i] %> </td>
+                <td><button type="button" class="btn btn-primary editField">Edit</button>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
