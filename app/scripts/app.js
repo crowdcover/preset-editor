@@ -32,7 +32,16 @@ function (_, Backbone, Marionette, $, Router, Preset, Presets, settings, modal) 
         var fetchPresetsUrl = settings.apiBase + 'presets.json';
         var fetchPresets = $.get(fetchPresetsUrl);
         fetchPresets.done(function (data) {
-            var presetsCollection = new Presets(_.toArray(data));
+
+            // Fill up id into the object.
+            var array = _.toArray(data);
+            _(data).keys().forEach(function(o, i) {
+
+                // Split the 'moabi/<id>' and get the id.
+                array[i]['id'] = o.split('/')[1];
+            });
+
+            var presetsCollection = new Presets(array);
             App.collections.presets = presetsCollection;
 
             // Trigger the initial route and enable HTML5 History API support

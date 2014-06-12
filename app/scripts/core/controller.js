@@ -21,10 +21,19 @@ function (Backbone, require, Marionette) {
         },
 
         addPreset: function () {
-            require(['views/addPreset', 'models/preset', 'app'],
-                function (AddPresetView, Preset, app) {
+            require(['views/presetView', 'models/preset', 'app'],
+                function (PresetView, Preset, app) {
                     var preset = new Preset();
-                    var view = new AddPresetView({model: preset});
+                    var view = new PresetView({model: preset});
+                    app.mainRegion.show(view);
+                });
+        },
+
+        editPreset: function (id) {
+            require(['views/presetView', 'models/preset', 'app'],
+                function (PresetView, Preset, app) {
+                    var selectedPreset = app.collections.presets.findWhere({'id': id});
+                    var view = new PresetView({model: selectedPreset});
                     app.mainRegion.show(view);
                 });
         }

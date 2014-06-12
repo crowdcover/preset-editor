@@ -31,7 +31,7 @@ define([
                 var preset = new Bloodhound({
                     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
                     queryTokenizer: Bloodhound.tokenizers.whitespace,
-                    local: $.map(app.collections.presets.models, function(preset) { return { value: preset.attributes.name }; })
+                    local: $.map(app.collections.presets.models, function(preset) { return {value: preset.attributes.name}; })
                 });
 
                 preset.initialize();
@@ -47,7 +47,11 @@ define([
                 });
 
                 this.ui.searchPreset.on('typeahead:selected', function (event, datum) {
-                    console.log(datum);
+                    var selectedPreset = app.collections.presets.findWhere({'name': datum.value});
+                    var editURL = 'edit/'+selectedPreset.get('id');
+                    Backbone.history.navigate(editURL);
+
+                    console.log(selectedPreset);
                 });
                 
                 preset.initialize();

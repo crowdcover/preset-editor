@@ -15,10 +15,10 @@ define([
                     '': 'index',
 
                     // Add new Preset
-                    'add': 'addPreset'
+                    'add': 'addPreset',
 
                     // Edit Preset
-                    // '/edit/:name': 'editPreset'
+                    'edit/:id': 'editPreset'
                 },
 
                 controller: new Controller()
