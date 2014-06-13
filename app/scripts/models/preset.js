@@ -44,6 +44,12 @@ define([
             
                 // Fire the change on the model so that view can pick up.
                 //this.trigger('change');
+            },
+
+            removeTag: function (tag) {
+                var existingTags = this.get('tags');
+                existingTags = _.omit(existingTags, tag.get('key'));
+                this.set('tags', existingTags);
             }
         });
 

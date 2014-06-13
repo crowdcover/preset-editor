@@ -23,7 +23,8 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView
         events: {
             'change #tagSelect': 'tagSelected',
             'click .editField': 'editField',
-            'click .editTag': 'editTag'
+            'click .editTag': 'editTag',
+            'click .removeTag': 'removeTag'
         },
 
         ui: {
@@ -98,6 +99,16 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView
                 presetModel: this.model
             });
             app.modalRegion.show(rawTagView);
+        },
+
+        removeTag: function (event) {
+            var message = 'Are you sure? This cannot be undone.';
+            if (confirm(message)) {
+                var tagKey = $(event.target).parents('tr').data('key');
+                var tagValue = $(event.target).parents('tr').data('value');
+                var tagModel = new Tag({'key': tagKey, 'value': tagValue});
+                this.model.removeTag(tagModel);
+            }
         },
 
         doSomething: function () {
