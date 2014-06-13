@@ -8,39 +8,40 @@ define([
     'models/tag',
     'views/fieldView',
     'views/rawTagView'
-],
+    ],
 
-function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView, RawTagView) {
+    function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView, RawTagView) {
 
-    return Backbone.Marionette.Layout.extend({
+        return Backbone.Marionette.Layout.extend({
 
-        template: _.template(addPresetTemplate),
+            template: _.template(addPresetTemplate),
 
-        regions: {
-            fields: '#fields'
-        },
+            regions: {
+                fields: '#fields'
+            },
 
-        events: {
-            'change #tagSelect': 'tagSelected',
-            'click .editField': 'editField',
-            'click .editTag': 'editTag',
-            'click .removeTag': 'removeTag'
-        },
+            events: {
+                'change #tagSelect': 'tagSelected',
+                'click .editField': 'editField',
+                'click .editTag': 'editTag',
+                'click .removeTag': 'removeTag',
+                'click .removeField': 'removeField'
+            },
 
-        ui: {
-            'tagSelect': '#tagSelect'
-        },
+            ui: {
+                'tagSelect': '#tagSelect'
+            },
 
-        initialize: function () {
-            this.listenTo(this.model, 'change', this.render);
-            console.log('add preset view');
-        },
+            initialize: function () {
+                this.listenTo(this.model, 'change', this.render);
+                this.confirmMessage = 'Are you sure? This cannot be undone.';
+            },
 
-        tagSelected: function () {
-            var value = this.ui.tagSelect.val(),
+            tagSelected: function () {
+                var value = this.ui.tagSelect.val(),
                 fieldViewType;
 
-            if (value === 'tag') {
+                if (value === 'tag') {
 
                 // Create a new raw tag model.
                 var newRawTagModel = new Tag();
@@ -102,12 +103,19 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView
         },
 
         removeTag: function (event) {
-            var message = 'Are you sure? This cannot be undone.';
-            if (confirm(message)) {
+            if (confirm(this.confirmMessage)) {
                 var tagKey = $(event.target).parents('tr').data('key');
                 var tagValue = $(event.target).parents('tr').data('value');
                 var tagModel = new Tag({'key': tagKey, 'value': tagValue});
                 this.model.removeTag(tagModel);
+            }
+        },
+
+        removeField: function (event) {
+            if (confirm(this.confirmMessage)) {
+                var fieldName = $(event.target).parents('tr').data('fieldname');
+                var fieldModel = app.collections.fields.findWhere({'name': fieldName});
+                this.model.removeField(fieldModel);
             }
         },
 

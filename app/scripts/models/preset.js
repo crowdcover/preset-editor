@@ -50,6 +50,12 @@ define([
                 var existingTags = this.get('tags');
                 existingTags = _.omit(existingTags, tag.get('key'));
                 this.set('tags', existingTags);
+            },
+
+            removeField: function (field) {
+                var existingFields = this.get('fields');
+                existingFields = _.without(existingFields, field.get('name'));
+                this.set('fields', existingFields);
             }
         });
 
