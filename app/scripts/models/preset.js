@@ -23,18 +23,20 @@ define([
                 this.trigger('change');
             },
 
-            addField: function (name) {
+            addField: function (field, previous) {
                 var existingFields = this.get('fields');
-                if (existingFields) {
-                    existingFields.push(name);
-                    this.set('fields', existingFields);
-                }
-                else {
-                    this.set('fields', [name]);
-                }
+                var name = field.get('name');
                 
+                if (previous.hasOwnProperty('name')) {
+                    existingFields = _.without(existingFields, previous.name);
+                }
+                console.log("existing fields", existingFields);
+                existingFields.push(name);
+                console.log("existing fields are push", existingFields);
+                this.set('fields', existingFields);                                  
+            
                 // Fire the change on the model so that view can pick up.
-                this.trigger('change');
+                //this.trigger('change');
             }
         });
 

@@ -20,7 +20,8 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, FieldView, Raw
         },
 
         events: {
-            'change #tagSelect': 'tagSelected'
+            'change #tagSelect': 'tagSelected',
+            'click .editField': 'editField'
         },
 
         ui: {
@@ -64,8 +65,22 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, FieldView, Raw
             // console.log(newField);
         },
 
+        onRender: function() {
+            console.log("re-rendered", this.model);
+        },
+        editField: function (event) {
+            var fieldName = $(event.target).data('fieldname');
+            var fieldModel = app.collections.fields.findWhere({'name': fieldName});
+            console.log(fieldModel);
+            var fieldView = new FieldView({
+                model: fieldModel, 
+                presetModel: this.model,
+            });
+            app.modalRegion.show(fieldView);
+        },
+
         doSomething: function () {
-            console.log('Something changed!');
+            // console.log('Something changed!');
         }
 
     });

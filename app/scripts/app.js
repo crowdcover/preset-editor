@@ -6,11 +6,12 @@ define([
     'core/router',
     'models/preset',
     'collections/presets',
+    'collections/fields',
     'settings',
     'regions/modal'
 ],
 
-function (_, Backbone, Marionette, $, Router, Preset, Presets, settings, modal) {
+function (_, Backbone, Marionette, $, Router, Preset, Presets, Fields, settings, modal) {
 
     var App = new Backbone.Marionette.Application();
     App.collections = {};
@@ -43,6 +44,8 @@ function (_, Backbone, Marionette, $, Router, Preset, Presets, settings, modal) 
 
             var presetsCollection = new Presets(array);
             App.collections.presets = presetsCollection;
+
+            App.collections.fields = new Fields([]);
 
             // Trigger the initial route and enable HTML5 History API support
             Backbone.history.start({ pushState: false, root: App.root });

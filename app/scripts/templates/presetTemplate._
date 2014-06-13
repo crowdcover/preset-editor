@@ -25,7 +25,7 @@
             <tr>
                 <td>Field</td>
                 <td> <%= fields[i] %> </td>
-                <td><button type="button" class="btn btn-primary editField">Edit</button>
+                <td><button type="button" class="btn btn-primary editField" data-fieldname="<%= fields[i] %>">Edit</button>
             </tr>
             <% } %>
         </tbody>

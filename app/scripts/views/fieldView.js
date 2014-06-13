@@ -20,6 +20,7 @@ define([
 
             ui: {
                 'options': '#options',
+                'name': '#fieldName',
                 'key': '#fieldKey',
                 'label': '#fieldLabel'
             },
@@ -67,12 +68,14 @@ define([
 
             save: function () {
                 var fieldType = this.model.get('type');
-                var fieldName = this.ui.key.val();
+                var fieldName = this.ui.name.val();
+                var fieldKey = this.ui.key.val();
                 var fieldLabel = this.ui.label.val();
                 var props = {};
 
                 // Set the key and label.
-                props['key'] = fieldName;
+                props['name']= fieldName;
+                props['key'] = fieldKey;
                 props['label'] = fieldLabel;
 
                 if (fieldType === 'radio' || fieldType === 'combo') {
@@ -83,13 +86,14 @@ define([
                     // Set the additional stuff.
                     props['options'] = options;
                 }
+                var previousAttributes = _.clone(this.model.attributes);
 
                 this.model.set(props);
-
                 //TODO: add if statement for 'check'   
-                this.presetModel.addField(fieldName);
-                console.log(this.presetModel);
-                console.log('Field', this.model);
+                this.presetModel.addField(this.model, previousAttributes);
+                app.collections.fields.set(this.model, {'remove': false});
+                // console.log(this.presetModel);
+                // console.log('Field', this.model);
                 app.modalRegion.close();
             }
         });
