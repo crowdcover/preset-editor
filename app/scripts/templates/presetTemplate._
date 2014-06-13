@@ -18,7 +18,7 @@
             <tr>
                 <td>Tag</td>
                 <td> <%= tag %> </td>
-                <td><button type="button" class="btn btn-primary editTag">Edit</button>
+                <td><button type="button" class="btn btn-primary editTag" data-key="<%= tag %>" data-value="<%= tags[tag] %>">Edit</button>
             </tr>
             <% } } %>
             <% for (var i=0; i< fields.length; i++) { %>

@@ -6,8 +6,8 @@
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <input type="text" id="tagKey" class="form-control" placeholder="Key">
-                <input type="text" id="tagValue" class="form-control" placeholder="Value">
+                <input type="text" id="tagKey" class="form-control" placeholder="Key" value="<%= key %>">
+                <input type="text" id="tagValue" class="form-control" placeholder="Value" value="<%= value %>">
             </div>
         </div>
         <div class="modal-footer">

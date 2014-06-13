@@ -23,20 +23,24 @@ define([
                 'options': '#options'
             },
 
-            initialize: function () {
+            initialize: function (options) {
+                this.presetModel = options.presetModel;
             },
 
             save: function () {
-                console.log('save');
 
                 var key = this.ui.key.val();
                 var value = this.ui.value.val();
 
-                this.model.addTag(key, value);
+                var previousAttributes = _.clone(this.model.attributes);
 
-                console.log(this.model);
+                // FIXME: Use a single set operation. 
+                this.model.set('key', key);
+                this.model.set('value', value);
 
-                var preset = this.model;
+                this.presetModel.addTag(this.model, previousAttributes);
+
+                // var preset = this.model;
                 app.modalRegion.close();
             }
         });

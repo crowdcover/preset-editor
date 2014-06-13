@@ -5,11 +5,12 @@ define([
     'text!templates/presetTemplate._',
     'app',
     'models/field',
+    'models/tag',
     'views/fieldView',
     'views/rawTagView'
 ],
 
-function (Backbone, Marionette, _, addPresetTemplate, app, Field, FieldView, RawTagView) {
+function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView, RawTagView) {
 
     return Backbone.Marionette.Layout.extend({
 
@@ -21,7 +22,8 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, FieldView, Raw
 
         events: {
             'change #tagSelect': 'tagSelected',
-            'click .editField': 'editField'
+            'click .editField': 'editField',
+            'click .editTag': 'editTag'
         },
 
         ui: {
@@ -39,8 +41,15 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, FieldView, Raw
 
             if (value === 'tag') {
 
-                // Create a new raw tag view with the existing preset model.
-                var newRawTagView = new RawTagView({model: this.model});
+                // Create a new raw tag model.
+                var newRawTagModel = new Tag();
+
+                // Create a new raw tag view.
+                // var newRawTagView = new RawTagView({model: this.model});
+                var newRawTagView = new RawTagView({
+                    model: newRawTagModel,
+                    presetModel: this.model
+                });
                 app.modalRegion.show(newRawTagView);
 
                 return;
@@ -68,6 +77,7 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, FieldView, Raw
         onRender: function() {
             console.log("re-rendered", this.model);
         },
+        
         editField: function (event) {
             var fieldName = $(event.target).data('fieldname');
             var fieldModel = app.collections.fields.findWhere({'name': fieldName});
@@ -77,6 +87,17 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, FieldView, Raw
                 presetModel: this.model,
             });
             app.modalRegion.show(fieldView);
+        },
+
+        editTag: function (event) {
+            var tagKey = $(event.target).data('key');
+            var tagValue = $(event.target).data('value');
+            var tagModel = new Tag({'key': tagKey, 'value': tagValue});
+            var rawTagView = new RawTagView({
+                model: tagModel,
+                presetModel: this.model
+            });
+            app.modalRegion.show(rawTagView);
         },
 
         doSomething: function () {

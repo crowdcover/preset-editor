@@ -14,9 +14,16 @@ define([
             // FIXME: All the following functions need validation 
             // and duplicate check.
             
-            addTag: function (key, value) {
+            addTag: function (tag, previous) {
                 var existingTags = this.get('tags');
-                existingTags[key] = value;
+                var key = tag.get('key');
+
+                if (previous.hasOwnProperty('key')) {
+                    console.log('Previous Tag', previous);
+                    existingTags = _.omit(existingTags, previous.key);
+                }
+                existingTags[key] = tag.get('value');
+
                 this.set('tags', existingTags);
 
                 // Fire the change on the model so that view can pick up.
