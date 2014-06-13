@@ -8,7 +8,7 @@ define([
     'models/tag',
     'views/fieldView',
     'views/rawTagView'
-    ],
+],
 
     function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView, RawTagView) {
 
@@ -43,85 +43,86 @@ define([
 
                 if (value === 'tag') {
 
-                // Create a new raw tag model.
-                var newRawTagModel = new Tag();
+                    // Create a new raw tag model.
+                    var newRawTagModel = new Tag();
 
-                // Create a new raw tag view.
-                // var newRawTagView = new RawTagView({model: this.model});
-                var newRawTagView = new RawTagView({
-                    model: newRawTagModel,
+                    // Create a new raw tag view.
+                    // var newRawTagView = new RawTagView({model: this.model});
+                    var newRawTagView = new RawTagView({
+                        model: newRawTagModel,
+                        presetModel: this.model
+                    });
+                    app.modalRegion.show(newRawTagView);
+
+                    return;
+                }
+
+                // Create a model based on the type of field.
+                var newFieldModel = new Field({type: value});
+
+                // Make this view listen to the model.
+                this.listenTo(newFieldModel, 'all', this.doSomething);
+
+                // Create a view
+                var newFieldView = new FieldView({
+                    model: newFieldModel,
+                    presetModel: this.model,
+                });
+
+                app.modalRegion.show(newFieldView);
+            },
+
+            onRender: function () {
+            },
+
+            getTag: function (target) {
+                var $row = $(target).parents('tr');
+                var tagKey = $row.data('key');
+                var tagValue = $row.data('value');
+                return new Tag({'key': tagKey, 'value': tagValue});
+            },
+
+            getField: function (target) {
+                var $row = $(target).parents('tr');
+                var fieldName = $row.data('fieldname');
+                return app.collections.fields.findWhere({'name': fieldName});
+            },
+            
+            editField: function (event) {
+                var fieldModel = this.getField(event.target);
+                var fieldView = new FieldView({
+                    model: fieldModel,
+                    presetModel: this.model,
+                });
+                app.modalRegion.show(fieldView);
+            },
+
+            editTag: function (event) {
+                var tagModel = this.getTag(event.target);
+                var rawTagView = new RawTagView({
+                    model: tagModel,
                     presetModel: this.model
                 });
-                app.modalRegion.show(newRawTagView);
+                app.modalRegion.show(rawTagView);
+            },
 
-                return;
+            removeTag: function (event) {
+                if (confirm(this.confirmMessage)) {
+                    var tagModel = this.getTag(event.target);
+                    this.model.removeTag(tagModel);
+                }
+            },
+
+            removeField: function (event) {
+                if (confirm(this.confirmMessage)) {
+                    var fieldModel = this.getField(event.target);
+                    this.model.removeField(fieldModel);
+                }
+            },
+
+            doSomething: function () {
+                // console.log('Something changed!');
             }
-
-            // Create a model based on the type of field.
-            var newFieldModel = new Field({type: value});
-
-            // Make this view listen to the model.
-            this.listenTo(newFieldModel, 'all', this.doSomething);
-
-            // Create a view
-            var newFieldView = new FieldView({
-                model: newFieldModel, 
-                presetModel: this.model,
-                // fieldViewType: fieldViewType
-            });
-
-            // var fieldView = new FieldView({model: newField});
-            app.modalRegion.show(newFieldView);
-
-            // console.log(newField);
-        },
-
-        onRender: function() {
-            console.log("re-rendered", this.model);
-        },
-        
-        editField: function (event) {
-            var fieldName = $(event.target).parents('tr').data('fieldname');
-            var fieldModel = app.collections.fields.findWhere({'name': fieldName});
-            console.log(fieldModel);
-            var fieldView = new FieldView({
-                model: fieldModel, 
-                presetModel: this.model,
-            });
-            app.modalRegion.show(fieldView);
-        },
-
-        editTag: function (event) {
-            var tagKey = $(event.target).parents('tr').data('key');
-            var tagValue = $(event.target).parents('tr').data('value');
-            var tagModel = new Tag({'key': tagKey, 'value': tagValue});
-            var rawTagView = new RawTagView({
-                model: tagModel,
-                presetModel: this.model
-            });
-            app.modalRegion.show(rawTagView);
-        },
-
-        removeTag: function (event) {
-            if (confirm(this.confirmMessage)) {
-                var tagKey = $(event.target).parents('tr').data('key');
-                var tagValue = $(event.target).parents('tr').data('value');
-                var tagModel = new Tag({'key': tagKey, 'value': tagValue});
-                this.model.removeTag(tagModel);
-            }
-        },
-
-        removeField: function (event) {
-            if (confirm(this.confirmMessage)) {
-                var fieldName = $(event.target).parents('tr').data('fieldname');
-                var fieldModel = app.collections.fields.findWhere({'name': fieldName});
-                this.model.removeField(fieldModel);
-            }
-        },
-
-        doSomething: function () {
-            // console.log('Something changed!');
-        }
 
     });
 });
