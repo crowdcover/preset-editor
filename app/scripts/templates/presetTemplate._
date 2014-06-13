@@ -33,3 +33,8 @@
         </tbody>
     </table>
 </div>
+<div class="row save">
+    <div class="text-center">
+        <button type="button" class="btn btn-primary savePreset">Save</button>
+    </div>
+</div>
