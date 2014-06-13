@@ -12,20 +12,22 @@
       </div>
 </div>
 <div class="row" id="preview">
-    <table class="table">
+    <table class="table table-condensed">
         <tbody>
             <% for (tag in tags) { if (tags.hasOwnProperty(tag)) { %>
-            <tr>
+            <tr data-key="<%= tag %>" data-value="<%= tags[tag] %>">
                 <td>Tag</td>
                 <td> <%= tag %> </td>
-                <td><button type="button" class="btn btn-primary editTag" data-key="<%= tag %>" data-value="<%= tags[tag] %>">Edit</button>
+                <td><button type="button" class="btn btn-primary editTag">Edit</button>
+                <td><button type="button" class="btn btn-danger removeTag">Remove</button>    
             </tr>
             <% } } %>
             <% for (var i=0; i< fields.length; i++) { %>
-            <tr>
+            <tr data-fieldname="<%= fields[i] %>">
                 <td>Field</td>
                 <td> <%= fields[i] %> </td>
-                <td><button type="button" class="btn btn-primary editField" data-fieldname="<%= fields[i] %>">Edit</button>
+                <td><button type="button" class="btn btn-primary editField" >Edit</button>
+                <td><button type="button" class="btn btn-danger removeField">Remove</button>
             </tr>
             <% } %>
         </tbody>

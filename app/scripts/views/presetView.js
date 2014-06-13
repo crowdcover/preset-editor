@@ -79,7 +79,7 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView
         },
         
         editField: function (event) {
-            var fieldName = $(event.target).data('fieldname');
+            var fieldName = $(event.target).parents('tr').data('fieldname');
             var fieldModel = app.collections.fields.findWhere({'name': fieldName});
             console.log(fieldModel);
             var fieldView = new FieldView({
@@ -90,8 +90,8 @@ function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView
         },
 
         editTag: function (event) {
-            var tagKey = $(event.target).data('key');
-            var tagValue = $(event.target).data('value');
+            var tagKey = $(event.target).parents('tr').data('key');
+            var tagValue = $(event.target).parents('tr').data('value');
             var tagModel = new Tag({'key': tagKey, 'value': tagValue});
             var rawTagView = new RawTagView({
                 model: tagModel,
