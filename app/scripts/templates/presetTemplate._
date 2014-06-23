@@ -2,7 +2,7 @@
       <div class="col-md-6 col-md-offset-3">
         <input type="text" class="form-control" placeholder="Name" value='<%= name %>'>
         <select id='tagSelect' class="form-control">
-            <option></option>
+            <option>Select to add an item</option>
             <option value='tag'>Tag</option>
             <option value='textarea'>Text</option>
             <option value='radio'>Radio</option>

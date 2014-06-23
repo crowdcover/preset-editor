@@ -6,7 +6,7 @@
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <input type="text" id="fieldName" class="form-control" placeholder="Name" value="<%= name %>">
+                <!-- <input type="text" id="fieldName" class="form-control" placeholder="Name" value="<%= name %>"> -->
                 <input type="text" id="fieldKey" class="form-control" placeholder="Key" value="<%= key %>">
                 <input type="text" id="fieldLabel" class="form-control" placeholder="Label" value="<%= label %>">
             </div>
