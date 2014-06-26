@@ -4,10 +4,10 @@ define([
     'underscore',
     'text!templates/rawTag._',
     'app',
-    'core/connection'
+    'settings'
 ],
 
-    function (Backbone, Marionette, _, rawTagTemplate, app) {
+    function (Backbone, Marionette, _, rawTagTemplate, app, settings) {
         
         return Marionette.ItemView.extend({
 
@@ -27,8 +27,15 @@ define([
                 this.presetModel = options.presetModel;
             },
 
-            save: function () {
+            templateHelpers: function () {
 
+                return {
+                    'settings': settings
+                };
+
+            },
+
+            save: function () {
                 var key = this.ui.key.val();
                 var value = this.ui.value.val();
 

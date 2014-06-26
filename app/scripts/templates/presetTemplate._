@@ -1,38 +1,67 @@
 <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <input type="text" class="form-control" placeholder="Name" value='<%= name %>'>
-        <select id='tagSelect' class="form-control">
-            <option>Select to add an item</option>
-            <option value='tag'>Tag</option>
-            <option value='textarea'>Text</option>
-            <option value='radio'>Radio</option>
-            <option value='combo'>Combo</option>
-            <option value='check'>Check</option>
-        </select>
+      <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Preset Name
+                </div>
+                <div class="panel-body">
+                <input type="text" class="form-control presetName" placeholder="Name" value='<%= name %>'>
+                </div>
+            </div>
+
+        <div class="panel panel-default addTagPanel">
+            <div class="panel-heading">
+                <%= settings.tagLabel %>
+            </div>
+            <div class="panel-body">
+                <button type="button" class="btn btn-primary addTag"><span class="glyphicon glyphicon-plus"></span> <%= settings.tagLabel %></button>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <%= settings.fieldLabel %>
+            </div>
+            <div class="panel-body">
+                <select id='tagSelect' class="form-control">
+                    <option>Select to add an item</option>
+                    <option value='tag'>Tag</option>
+                    <option value='textarea'>Text</option>
+                    <option value='radio'>Radio</option>
+                    <option value='combo'>Combo</option>
+                    <option value='check'>Check</option>
+                </select>
+            </div>
+        </div>
       </div>
+
+<div class="col-md-7" id="preview">
+    <div class="panel panel-default">
+        <div class="panel-heading">Preset Preview</div>
+            <table class="table table-condensed">
+                <tbody>
+                    <% for (tag in tags) { if (tags.hasOwnProperty(tag)) { %>
+                    <tr data-key="<%= tag %>" data-value="<%= tags[tag] %>">
+                        <td><%= settings.tagLabel %></td>
+                        <td> <%= tag %> </td>
+                        <td><button type="button" class="btn btn-primary editTag"><span class="glyphicon glyphicon-edit"></span></button>
+                        <td><button type="button" class="btn btn-danger removeTag"><span class="glyphicon glyphicon-remove"></span></button>    
+                    </tr>
+                    <% } } %>
+                    <% for (var i=0; i< fields.length; i++) { %>
+                    <tr data-fieldname="<%= fields[i] %>">
+                        <td><%= settings.fieldLabel %></td>
+                        <td> <%= fields[i] %> </td>
+                        <td><button type="button" class="btn btn-primary editField" ><span class="glyphicon glyphicon-edit"></button>
+                        <td><button type="button" class="btn btn-danger removeField"><span class="glyphicon glyphicon-remove"></button>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+    </div>
 </div>
-<div class="row" id="preview">
-    <table class="table table-condensed">
-        <tbody>
-            <% for (tag in tags) { if (tags.hasOwnProperty(tag)) { %>
-            <tr data-key="<%= tag %>" data-value="<%= tags[tag] %>">
-                <td>Tag</td>
-                <td> <%= tag %> </td>
-                <td><button type="button" class="btn btn-primary editTag">Edit</button>
-                <td><button type="button" class="btn btn-danger removeTag">Remove</button>    
-            </tr>
-            <% } } %>
-            <% for (var i=0; i< fields.length; i++) { %>
-            <tr data-fieldname="<%= fields[i] %>">
-                <td>Field</td>
-                <td> <%= fields[i] %> </td>
-                <td><button type="button" class="btn btn-primary editField" >Edit</button>
-                <td><button type="button" class="btn btn-danger removeField">Remove</button>
-            </tr>
-            <% } %>
-        </tbody>
-    </table>
 </div>
+
 <div class="row save">
     <div class="text-center">
         <button type="button" class="btn btn-primary savePreset">Save</button>

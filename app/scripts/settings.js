@@ -1,5 +1,9 @@
-define(
-    function () {
+define([
+    'underscore',
+    'local_settings'
+],
+
+    function (_, localSettings) {
         var devAPI = 'http://dev.osm.moabi.org/api/0.6/';
         var prodAPI = 'http://osm.moabi.org/api/0.6/';
         var localAPI = 'http://localhost:3000/api/0.6/';
@@ -13,10 +17,13 @@ define(
         else {
             apiBase = localAPI;
         }
-        return {
+        return _.extend({
             'apiBase': apiBase,
             'oauthConsumer': 'H2QjYl5yoTz4kOcFxnoGLVbS0h5zJfrlA3IA6bcY',
             'oauthSecret': 'dCmGLi7sje8en1b9UrS6w634qH7qLMKgOAYrn9uX',
-            'authURL': authURL
-        };
+            'authURL': authURL,
+            'singleTag': false,
+            'tagLabel': 'Tag',
+            'fieldLabel': 'Field'
+        }, localSettings);
 });

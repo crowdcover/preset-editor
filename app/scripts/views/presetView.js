@@ -7,10 +7,11 @@ define([
     'models/field',
     'models/tag',
     'views/fieldView',
-    'views/rawTagView'
+    'views/rawTagView',
+    'settings'
 ],
 
-    function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView, RawTagView) {
+    function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView, RawTagView, settings) {
 
         return Backbone.Marionette.Layout.extend({
 
@@ -25,16 +26,26 @@ define([
                 'click .editField': 'editField',
                 'click .editTag': 'editTag',
                 'click .removeTag': 'removeTag',
-                'click .removeField': 'removeField'
+                'click .removeField': 'removeField',
+                'click .addTag': 'addTag'
             },
 
             ui: {
-                'tagSelect': '#tagSelect'
+                'tagSelect': '#tagSelect',
+                'presetName': '.presetName',
+                'addTagPanel': '.addTagPanel',
+                'addTagButton': '.addTag'
             },
 
             initialize: function () {
                 this.listenTo(this.model, 'change', this.render);
                 this.confirmMessage = 'Are you sure? This cannot be undone.';
+            },
+
+            templateHelpers: function () {
+                return {
+                    'settings': settings
+                };
             },
 
             tagSelected: function () {
@@ -73,6 +84,14 @@ define([
             },
 
             onRender: function () {
+
+                var hasTag = _.isEmpty(this.model.get('tags'));
+                if (settings.singleTag === true) {
+                    if (hasTag === false) {
+                        // console.log(haveTags);
+                        this.ui.addTagPanel.addClass('hide');
+                    }
+                }
             },
 
             getTag: function (target) {
@@ -118,6 +137,20 @@ define([
                     var fieldModel = this.getField(event.target);
                     this.model.removeField(fieldModel);
                 }
+            },
+
+            addTag: function () {
+                // Create a new raw tag model.
+                var newRawTagModel = new Tag();
+
+                // Create a new raw tag view.
+                // var newRawTagView = new RawTagView({model: this.model});
+                var newRawTagView = new RawTagView({
+                    model: newRawTagModel,
+                    presetModel: this.model
+                });
+
+                app.modalRegion.show(newRawTagView);
             },
 
             doSomething: function () {

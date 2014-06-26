@@ -91,7 +91,8 @@ Browse Happy prompt
 Author's custom styles
 ========================================================================== */
 
-.container {
+#content {
+    margin-top: 60px;
     text-align: center;
 }
 
@@ -154,14 +155,36 @@ border-bottom: 1px solid black;
 }
 
 #preview {
-    margin-top: 35px;
+    /*margin-top: 35px;*/
     text-align: left;
 }
 
 .save {
-    border-top: 1px solid #000;
+    margin-top: 40px;
+    border-top: 1px solid #E5E5E5;;
     padding: 10px;
 }
+
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  padding-bottom: 19px;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+}
+
+.header,
+.marketing,
+.footer {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 
 /* ==========================================================================
 Helper classes
