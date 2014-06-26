@@ -69,21 +69,12 @@ define([
             },
 
             addPreset: function () {
-                // console.log('adding a preset');
-                // console.log(app.collections.presets);
-                // console.log(connection);
-                connection.xhr({
-                    method: 'GET',
-                    path: '/api/0.6/user/details'
-                }, function (err, details) {
-
-                    // details is an XML DOM of user details
-                    console.log(details);
-                    console.log(connection.authenticated());
-                });
+                // connection.oauth.xhr({
+                //     method: 'GET',
+                //     path: '/api/0.6/user/details'
+                // });
 
                 Backbone.history.navigate('add', {trigger: true});
             }
-
         });
 });

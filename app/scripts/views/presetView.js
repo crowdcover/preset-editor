@@ -8,10 +8,11 @@ define([
     'models/tag',
     'views/fieldView',
     'views/rawTagView',
+    'core/connection',
     'settings'
 ],
 
-    function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView, RawTagView, settings) {
+    function (Backbone, Marionette, _, addPresetTemplate, app, Field, Tag, FieldView, RawTagView, connection, settings) {
 
         return Backbone.Marionette.Layout.extend({
 
@@ -27,7 +28,8 @@ define([
                 'click .editTag': 'editTag',
                 'click .removeTag': 'removeTag',
                 'click .removeField': 'removeField',
-                'click .addTag': 'addTag'
+                'click .addTag': 'addTag',
+                'click .savePreset': 'savePreset'
             },
 
             ui: {
@@ -38,8 +40,10 @@ define([
             },
 
             initialize: function () {
+                this.listenTo(app.vent, 'authDone', this.authDone);
                 this.listenTo(this.model, 'change', this.render);
                 this.confirmMessage = 'Are you sure? This cannot be undone.';
+                this.savePending = false;
             },
 
             templateHelpers: function () {
@@ -153,8 +157,28 @@ define([
                 app.modalRegion.show(newRawTagView);
             },
 
-            doSomething: function () {
-                // console.log('Something changed!');
+            authDone: function () {
+                console.log('authDONE!');
+            },
+
+            authenticate: function (){
+                    connection.oauth.authenticate(function (){
+                        app.vent.trigger('authDone');
+                    })
+            },
+
+            savePreset: function () {
+                if (connection.oauth.authenticated()) {
+                    console.log('Okay, save');
+                }
+                else {
+                    this.savePending = true;
+                    this.authenticate();
+                }
+            },
+
+            doSomething: function (e) {
+                console.log(e);
             }
 
     });

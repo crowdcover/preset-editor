@@ -4,17 +4,20 @@ define([
     'marionette',
     'bootstrap',
     'core/router',
+    'core/connection',
     'models/preset',
     'collections/presets',
     'collections/fields',
+    'views/headerView',
     'settings',
     'regions/modal'
 ],
 
-function (_, Backbone, Marionette, $, Router, Preset, Presets, Fields, settings, modal) {
+function (_, Backbone, Marionette, $, Router, connection, Preset, Presets, Fields, HeaderView, settings, modal) {
 
     var App = new Backbone.Marionette.Application();
     App.collections = {};
+    App.views = {};
 
     // An init function for your main application object
     App.addInitializer(function () {
@@ -24,6 +27,11 @@ function (_, Backbone, Marionette, $, Router, Preset, Presets, Fields, settings,
             mainRegion: '#content',
             modalRegion: modal
         });
+        this.views.headerView = new HeaderView({});
+
+        if (connection.oauth.authenticated() === true) {
+            connection.userDetails();
+        };
     });
 
     // Add as many of these as you like
@@ -45,6 +53,7 @@ function (_, Backbone, Marionette, $, Router, Preset, Presets, Fields, settings,
             var presetsCollection = new Presets(array);
             App.collections.presets = presetsCollection;
 
+            // FIXME: get the fields from API and populate it here.
             App.collections.fields = new Fields([]);
 
             // Trigger the initial route and enable HTML5 History API support
