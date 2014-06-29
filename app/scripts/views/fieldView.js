@@ -3,8 +3,7 @@ define([
     'marionette',
     'underscore',
     'text!templates/fieldTemplate._',
-    'app',
-    'core/connection'
+    'app'
 ],
 
     function (Backbone, Marionette, _, fieldTemplate, app) {
@@ -22,7 +21,8 @@ define([
                 'options': '#options',
                 'name': '#fieldName',
                 'key': '#fieldKey',
-                'label': '#fieldLabel'
+                'label': '#fieldLabel',
+                'saveButton': '#save'
             },
 
             initialize: function (options) {
@@ -31,12 +31,11 @@ define([
             },
 
             clickAddOption: function (event) {
-                var name = ''
+                var name = '';
                 this.addOption(name);
             },
 
             addOption: function (name) {
-                console.log(name);
 
                 var $input = $('<input />').addClass('form-control')
                     .addClass('fieldOption')
@@ -51,35 +50,33 @@ define([
                     .insertAfter($input);
             },
 
-            onRender: function() {
+            onRender: function () {
                 var that = this;
 
                 if (typeof(this.model.get('options')) !== 'undefined') {
                     
-                    this.model.get('options').forEach(function(option) {
+                    this.model.get('options').forEach(function (option) {
                         that.addOption(option);
                     });
 
                 }
             },
-            templateHelpers: function() {
+            templateHelpers: function () {
         
             },
 
             save: function () {
                 var fieldType = this.model.get('type');
-                var fieldName = this.ui.name.val();
                 var fieldKey = this.ui.key.val();
                 var fieldLabel = this.ui.label.val();
                 var props = {};
 
                 // Set the key and label.
-                props['name']= fieldName;
                 props['key'] = fieldKey;
                 props['label'] = fieldLabel;
 
                 if (fieldType === 'radio' || fieldType === 'combo') {
-                    var options = this.$el.find('.fieldOption').map(function() {
+                    var options = this.$el.find('.fieldOption').map(function () {
                         return this.value;
                     }).get();
 
@@ -90,11 +87,21 @@ define([
 
                 this.model.set(props);
                 //TODO: add if statement for 'check'   
-                this.presetModel.addField(this.model, previousAttributes);
-                app.collections.fields.set(this.model, {'remove': false});
-                // console.log(this.presetModel);
-                // console.log('Field', this.model);
-                app.modalRegion.close();
+                // this.presetModel.addField(this.model, previousAttributes);
+
+                this.ui.saveButton.button('loading');
+                var that = this;
+
+                this.model.save({}, {success: function (model, response, options) {
+
+                    model.set('name', String(response.id));
+                    app.collections.fields.set(model, {'remove': false});
+                    that.presetModel.addField(model, previousAttributes);
+                    that.ui.saveButton.button('reset');
+                    app.modalRegion.close();
+                }
+            });
+
             }
         });
     });

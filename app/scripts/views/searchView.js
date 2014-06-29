@@ -48,7 +48,7 @@ define([
 
                 this.ui.searchPreset.on('typeahead:selected', function (event, datum) {
                     var selectedPreset = app.collections.presets.findWhere({'name': datum.value});
-                    var editURL = 'edit/'+selectedPreset.get('id');
+                    var editURL = 'edit/' + selectedPreset.get('id');
                     Backbone.history.navigate(editURL, {'trigger': true});
                 });
                 

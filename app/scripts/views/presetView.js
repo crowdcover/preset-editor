@@ -29,14 +29,16 @@ define([
                 'click .removeTag': 'removeTag',
                 'click .removeField': 'removeField',
                 'click .addTag': 'addTag',
-                'click .savePreset': 'savePreset'
+                'click .savePreset': 'savePreset',
+                'blur .presetName': 'setName'
             },
 
             ui: {
                 'tagSelect': '#tagSelect',
                 'presetName': '.presetName',
                 'addTagPanel': '.addTagPanel',
-                'addTagButton': '.addTag'
+                'addTagButton': '.addTag',
+                'saveButton': '.savePreset'
             },
 
             initialize: function () {
@@ -47,30 +49,17 @@ define([
             },
 
             templateHelpers: function () {
+                var fields = this.model.get('fields').map(function (fieldID) {
+                    return app.collections.fields.findWhere({'name': String(fieldID)});
+                });
                 return {
-                    'settings': settings
+                    'settings': settings,
+                    'fieldModels': fields
                 };
             },
 
             tagSelected: function () {
-                var value = this.ui.tagSelect.val(),
-                fieldViewType;
-
-                if (value === 'tag') {
-
-                    // Create a new raw tag model.
-                    var newRawTagModel = new Tag();
-
-                    // Create a new raw tag view.
-                    // var newRawTagView = new RawTagView({model: this.model});
-                    var newRawTagView = new RawTagView({
-                        model: newRawTagModel,
-                        presetModel: this.model
-                    });
-                    app.modalRegion.show(newRawTagView);
-
-                    return;
-                }
+                var value = this.ui.tagSelect.val();
 
                 // Create a model based on the type of field.
                 var newFieldModel = new Field({type: value});
@@ -88,7 +77,6 @@ define([
             },
 
             onRender: function () {
-
                 var hasTag = _.isEmpty(this.model.get('tags'));
                 if (settings.singleTag === true) {
                     if (hasTag === false) {
@@ -108,7 +96,7 @@ define([
             getField: function (target) {
                 var $row = $(target).parents('tr');
                 var fieldName = $row.data('fieldname');
-                return app.collections.fields.findWhere({'name': fieldName});
+                return app.collections.fields.findWhere({'name': String(fieldName)});
             },
             
             editField: function (event) {
@@ -157,19 +145,32 @@ define([
                 app.modalRegion.show(newRawTagView);
             },
 
-            authDone: function () {
-                console.log('authDONE!');
+            setName: function () {
+                this.model.set({'name': this.ui.presetName.val()});
             },
 
-            authenticate: function (){
-                    connection.oauth.authenticate(function (){
+            authDone: function () {
+                console.log('authDONE!');
+                if (this.savePending && connection.oauth.authenticated()) {
+                    this.savePreset();
+                }
+            },
+
+            authenticate: function () {
+                    connection.oauth.authenticate(function () {
                         app.vent.trigger('authDone');
-                    })
+                    });
             },
 
             savePreset: function () {
+                var that = this;
+                this.ui.saveButton.button('loading');
                 if (connection.oauth.authenticated()) {
-                    console.log('Okay, save');
+                    this.model.save({}, {success: function (model, response, options) {
+                        model.set({'id': String(response.id)});
+                        app.collections.presets.set(model, {remove: false});
+                        that.ui.saveButton.button('reset');
+                    }});
                 }
                 else {
                     this.savePending = true;

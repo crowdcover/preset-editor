@@ -7,16 +7,12 @@ define([
 
     function (Backbone, _, osmAuth, settings) {
         var osmauth = osmAuth({
-
-            // Get the root URL from apiBase.
-            // url: settings.apiBase.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)[0],
             url: settings.authURL,
-            land: 'index.html',
+            land: 'land.html',
             oauth_secret: settings.oauthSecret,
             oauth_consumer_key: settings.oauthConsumer,
-            auto: true
+            auto: false
         });
-        // return auth;
         var auth = {
             'oauth': osmauth,
             userDetails: function () {
@@ -35,8 +31,6 @@ define([
                         id: u.attributes.id.nodeValue
                     };
 
-                    // console.log(user);
-                    // return user;
                     var app = require('app');
                     app.vent.trigger('gotUserDetails', user);
                 }

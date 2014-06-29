@@ -6,6 +6,7 @@ define([
     'core/router',
     'core/connection',
     'models/preset',
+    'models/field',
     'collections/presets',
     'collections/fields',
     'views/headerView',
@@ -13,7 +14,7 @@ define([
     'regions/modal'
 ],
 
-function (_, Backbone, Marionette, $, Router, connection, Preset, Presets, Fields, HeaderView, settings, modal) {
+function (_, Backbone, Marionette, $, Router, connection, Preset, Field, Presets, Fields, HeaderView, settings, modal) {
 
     var App = new Backbone.Marionette.Application();
     App.collections = {};
@@ -31,40 +32,45 @@ function (_, Backbone, Marionette, $, Router, connection, Preset, Presets, Field
 
         if (connection.oauth.authenticated() === true) {
             connection.userDetails();
+        }
+    });
+
+
+    App.addInitializer(function () {
+        //Backbone.original_sync = Backbone.sync;
+        var oauth = connection.oauth;
+        Backbone.sync = function (method, model, options) {
+            var methods = {
+                'read': 'GET',
+                'create': 'POST',
+                'update': 'PUT',
+                'delete': 'DELETE'
+            };
+            var xhrOptions = {
+                'method': methods[method],
+                'path': options.url || model.url(),
+                'options': {header: {'Content-Type': 'text/xml'}},
+                'content': JSON.stringify(options.attrs || model.toJSON(options))
+            };
+            oauth.xhr(xhrOptions, function (err, details) {
+                options.success(JSON.parse(details));
+            });
         };
     });
 
-    // Add as many of these as you like
     App.addInitializer(function () {
 
-        // Ajax for Presets.
-        var fetchPresetsUrl = settings.apiBase + 'presets.json';
-        var fetchPresets = $.get(fetchPresetsUrl);
-        fetchPresets.done(function (data) {
-
-            // Fill up id into the object.
-            var array = _.toArray(data);
-            _(data).keys().forEach(function(o, i) {
-
-                // Split the 'moabi/<id>' and get the id.
-                array[i]['id'] = o.split('/')[1];
-            });
-
-            var presetsCollection = new Presets(array);
-            App.collections.presets = presetsCollection;
-
-            // FIXME: get the fields from API and populate it here.
-            App.collections.fields = new Fields([]);
-
-            // Trigger the initial route and enable HTML5 History API support
-            Backbone.history.start({ pushState: false, root: App.root });
+        App.collections.presets = new Presets([]);
+        App.collections.presets.fetch({
+            'success': function (response) {
+                App.collections.fields = new Fields([]);
+                App.collections.fields.fetch({
+                    'success': function (response) {
+                        Backbone.history.start({ pushState: false, root: App.root });
+                    }
+                });
+            }
         });
-
-        fetchPresets.fail(function () {
-            // Failure.
-        });
-        // Ajax for Fields.
-        // Use jQuery.when()
     });
 
     // Return the instantiated app (there should only be one)

@@ -15,7 +15,7 @@ define([
             var apiBase = devAPI;
         }
         else {
-            apiBase = localAPI;
+           var apiBase = localAPI;
         }
         return _.extend({
             'apiBase': apiBase,

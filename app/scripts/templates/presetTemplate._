@@ -25,7 +25,6 @@
             <div class="panel-body">
                 <select id='tagSelect' class="form-control">
                     <option>Select to add an item</option>
-                    <option value='tag'>Tag</option>
                     <option value='textarea'>Text</option>
                     <option value='radio'>Radio</option>
                     <option value='combo'>Combo</option>
@@ -48,10 +47,10 @@
                         <td><button type="button" class="btn btn-danger removeTag"><span class="glyphicon glyphicon-remove"></span></button>    
                     </tr>
                     <% } } %>
-                    <% for (var i=0; i< fields.length; i++) { %>
-                    <tr data-fieldname="<%= fields[i] %>">
+                    <% for (var i=0; i< fieldModels.length; i++) { %>
+                    <tr data-fieldname="<%= fieldModels[i].attributes.name %>">
                         <td><%= settings.fieldLabel %></td>
-                        <td> <%= fields[i] %> </td>
+                        <td> <%= fieldModels[i].attributes.key %> </td>
                         <td><button type="button" class="btn btn-primary editField" ><span class="glyphicon glyphicon-edit"></button>
                         <td><button type="button" class="btn btn-danger removeField"><span class="glyphicon glyphicon-remove"></button>
                     </tr>
@@ -64,6 +63,6 @@
 
 <div class="row save">
     <div class="text-center">
-        <button type="button" class="btn btn-primary savePreset">Save</button>
+        <button type="button" class="btn btn-primary savePreset" data-loading-text="Saving...">Save</button>
     </div>
 </div>

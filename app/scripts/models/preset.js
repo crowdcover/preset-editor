@@ -1,19 +1,18 @@
 define([
-    'backbone'
+    'backbone',
+    'settings',
+    'core/connection'
 ],
 
-    function (Backbone) {
+    function (Backbone, settings, connection) {
         var Preset = Backbone.Model.extend({
             defaults: {
                 geometry: ['point', 'line', 'area'],
                 name: '',
                 tags: {},
-                fields: []
+                fields: [],
             },
-
-            // FIXME: All the following functions need validation 
-            // and duplicate check.
-            
+            urlRoot: '/api/0.6/presets',
             addTag: function (tag, previous) {
                 var existingTags = this.get('tags');
                 var key = tag.get('key');
@@ -37,13 +36,10 @@ define([
                 if (previous.hasOwnProperty('name')) {
                     existingFields = _.without(existingFields, previous.name);
                 }
-                console.log("existing fields", existingFields);
                 existingFields.push(name);
-                console.log("existing fields are push", existingFields);
-                this.set('fields', existingFields);                                  
-            
+                this.set('fields', existingFields);
                 // Fire the change on the model so that view can pick up.
-                //this.trigger('change');
+                this.trigger('change');
             },
 
             removeTag: function (tag) {

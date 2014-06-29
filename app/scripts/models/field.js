@@ -1,15 +1,16 @@
 define([
-    'backbone'
+    'backbone',
+    'settings'
 ],
 
-function (Backbone) {
+function (Backbone, settings) {
     var Field = Backbone.Model.extend({
         defaults: {
-            name: '',
             key: '',
             label: ''
         },
-        idAttribute: 'name'
+        idAttribute: 'name',
+        urlRoot: '/api/0.6/fields'
     });
     return Field;
 });
