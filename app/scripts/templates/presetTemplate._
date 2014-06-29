@@ -24,7 +24,7 @@
             </div>
             <div class="panel-body">
                 <select id='tagSelect' class="form-control">
-                    <option>Select to add an item</option>
+                    <option value=''>Select to add an item</option>
                     <option value='textarea'>Text</option>
                     <option value='radio'>Radio</option>
                     <option value='combo'>Combo</option>

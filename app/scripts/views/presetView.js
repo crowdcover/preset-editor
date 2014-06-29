@@ -61,6 +61,10 @@ define([
             tagSelected: function () {
                 var value = this.ui.tagSelect.val();
 
+                if (value === '') {
+                    return;
+                }
+                
                 // Create a model based on the type of field.
                 var newFieldModel = new Field({type: value});
 
