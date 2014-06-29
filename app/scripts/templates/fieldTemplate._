@@ -2,7 +2,11 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Add a <%= type %> field</h4>
+            <% if (isEdit === true) { %>
+                <h4 class="modal-title"> Edit a <%= type %> field</h4>
+                <% } else { %>
+                <h4 class="modal-title"> Add a <%= type %> field</h4>
+                <% } %>
         </div>
         <div class="modal-body">
             <div class="form-group">

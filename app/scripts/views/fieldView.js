@@ -62,6 +62,13 @@ define([
                 }
             },
             templateHelpers: function () {
+                
+                if (this.model.get('name')) {
+                    return {'isEdit': true};
+                }
+                else {
+                    return {'isEdit': false};
+                }
         
             },
 

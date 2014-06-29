@@ -182,9 +182,5 @@ define([
                 }
             },
 
-            doSomething: function (e) {
-                console.log(e);
-            }
-
     });
 });
