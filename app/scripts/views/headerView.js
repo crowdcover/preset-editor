@@ -12,6 +12,7 @@ define([
 
             initialize: function () {
                 var app = require('app');
+                this.listenTo(app.vent, 'authDone', this.authDone);
                 this.listenTo(app.vent, 'gotUserDetails', this.setUser);
                 this.listenTo(app.vent, 'loggedOut', this.removeUser);
                 this.bindUIElements();
@@ -33,6 +34,10 @@ define([
 
             },
 
+            authDone: function () {
+                connection.userDetails();
+            },
+
             setUser: function (user) {
                 this.ui.login.addClass('hide');
                 this.ui.logout.removeClass('hide');
@@ -44,6 +49,7 @@ define([
                 connection.oauth.logout();
                 var app = require('app');
                 app.vent.trigger('loggedOut');
+                return false;
             },
 
             removeUser: function () {
@@ -59,6 +65,7 @@ define([
                     app.vent.trigger('authDone');
                     connection.userDetails();
                 });
+                return false;
             }
         })
     });

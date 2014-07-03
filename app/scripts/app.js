@@ -37,21 +37,32 @@ function (_, Backbone, Marionette, $, Router, connection, Preset, Field, Presets
 
 
     App.addInitializer(function () {
-        //Backbone.original_sync = Backbone.sync;
+
+        // Override the overridden Sync for GET requests. 
+        // to NOT have authentication.
+        //FIXME: This will work only if the fetch is on a Collection 
+        // because of the model.url hack.
+        // Backbone.original_sync = Backbone.sync;
         var oauth = connection.oauth;
         Backbone.sync = function (method, model, options) {
+        //     if (method === 'read') {
+        //         model.url = settings.hostname + model.url();
+        //         return Backbone.original_sync.call(this, method, model, options);
+        //     }
             var methods = {
                 'read': 'GET',
                 'create': 'POST',
                 'update': 'PUT',
                 'delete': 'DELETE'
             };
+
             var xhrOptions = {
                 'method': methods[method],
                 'path': options.url || model.url(),
                 'options': {header: {'Content-Type': 'text/xml'}},
                 'content': JSON.stringify(options.attrs || model.toJSON(options))
             };
+            
             oauth.xhr(xhrOptions, function (err, details) {
                 options.success(JSON.parse(details));
             });
@@ -62,7 +73,7 @@ function (_, Backbone, Marionette, $, Router, connection, Preset, Field, Presets
 
         App.collections.presets = new Presets([]);
         App.collections.presets.fetch({
-            'success': function (response) {
+            'success': function (err, response) {
                 App.collections.fields = new Fields([]);
                 App.collections.fields.fetch({
                     'success': function (response) {

@@ -154,7 +154,6 @@ define([
             },
 
             authDone: function () {
-                console.log('authDONE!');
                 if (this.savePending && connection.oauth.authenticated()) {
                     this.savePreset();
                 }

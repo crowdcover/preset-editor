@@ -4,26 +4,29 @@ define([
 ],
 
     function (_, localSettings) {
-        var devAPI = 'http://dev.osm.moabi.org/api/0.6/';
-        var prodAPI = 'http://osm.moabi.org/api/0.6/';
-        var localAPI = 'http://localhost:3000/api/0.6/';
-        var authURL = 'http://dev.osm.moabi.org';
+        var hostname;
+        var devHostname = 'http://dev.osm.moabi.org';
+        var prodHostname = 'http://osm.moabi.org';
+        var localHostname = 'http://localhost:3000';
+        var apiURL = localHostname + '/api/0.6/';
         var environ = window.appGlobalConfig.environ;
         if (environ === 'prod') {
-            var apiBase = prodAPI;
+            hostname = prodHostname;
         } else  if (environ === 'dev') {
-            var apiBase = devAPI;
+            hostname = devHostname;
         }
         else {
-           var apiBase = localAPI;
+            hostname = localHostname;
         }
+        var apiURL = hostname + '/api/0.6/';
         return _.extend({
-            'apiBase': apiBase,
+            'hostname': hostname,
+            'apiURL': apiURL,
             'oauthConsumer': 'H2QjYl5yoTz4kOcFxnoGLVbS0h5zJfrlA3IA6bcY',
             'oauthSecret': 'dCmGLi7sje8en1b9UrS6w634qH7qLMKgOAYrn9uX',
-            'authURL': authURL,
             'singleTag': false,
             'tagLabel': 'Tag',
             'fieldLabel': 'Field'
         }, localSettings);
-});
+    }
+);

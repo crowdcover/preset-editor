@@ -7,12 +7,13 @@ define([
 
     function (Backbone, _, osmAuth, settings) {
         var osmauth = osmAuth({
-            url: settings.authURL,
+            url: settings.hostname,
             land: 'land.html',
             oauth_secret: settings.oauthSecret,
             oauth_consumer_key: settings.oauthConsumer,
-            auto: false
+            auto: true
         });
+
         var auth = {
             'oauth': osmauth,
             userDetails: function () {
