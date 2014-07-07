@@ -15,15 +15,17 @@
                 <input type="text" id="fieldLabel" class="form-control" placeholder="Label" value="<%= label %>">
             </div>
             <% if (type === 'radio' || type === 'combo') { %>
-                <div class="form-group" id="options">
+                <div class="form-group">
+                    <div class="col-md-4 form-group" id="options"></div>
+                    <div class="col-md-2 form-group" id="close"></div>
                     <button type="button" id="addOption" class="btn btn-default">Add Option</button>
                 </div>
             <% } %>
             <% if (type === 'check') { %>
-                <div class="form-group" id="check">
+<!--                 <div class="form-group" id="check">
                     <input type="text" id="onstate" class="form-control" placeholder="ON State">
                     <input type="text" id="offstate" class="form-control" placeholder="OFF State">
-                </div>
+                </div> -->
             <% } %>
         </div>
         <div class="modal-footer">

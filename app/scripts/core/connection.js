@@ -11,7 +11,11 @@ define([
             land: 'land.html',
             oauth_secret: settings.oauthSecret,
             oauth_consumer_key: settings.oauthConsumer,
-            auto: true
+            auto: true,
+            done: function () {
+                var app = require('app');
+                app.vent.trigger('authDone');
+            }
         });
 
         var auth = {

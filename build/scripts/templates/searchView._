@@ -1,5 +1,10 @@
 <div class="row search">
-  <input type="text" class="form-control" id="searchPreset" placeholder="Search">
+    <div class="panel panel-default">
+        <div class="panel-heading">Search for existing Presets</div>
+        <div class="panel-body">
+          <input type="text" class="form-control" id="searchPreset" placeholder="Search">
+        </div>
+    </div>
 </div>
 
 <div class="row">

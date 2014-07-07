@@ -29,6 +29,7 @@ core/controller.js
 core/router.js
 collections/presets.js
 collections/fields.js
+views/headerView.js
 regions/modal.js
 app.js
 main.js

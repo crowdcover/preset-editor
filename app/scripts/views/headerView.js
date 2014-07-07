@@ -35,7 +35,14 @@ define([
             },
 
             authDone: function () {
-                connection.userDetails();
+
+                // WHY ON EARTH IS JAVASCRIPT LIKE THIS?!
+                setTimeout(function() {
+                    if (connection.oauth.authenticated()) {
+                        console.log('authenticated');
+                        connection.userDetails();
+                    }
+                }, 1);
             },
 
             setUser: function (user) {
