@@ -169,6 +169,9 @@ button.optionsClose {
     padding-top: 10px;
 }
 
+#addOption {
+    margin-left: 129px;
+}
 
 /* Custom page header */
 .header {
