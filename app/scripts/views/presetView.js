@@ -170,8 +170,8 @@ define([
                 this.ui.saveButton.button('loading');
                 if (connection.oauth.authenticated()) {
                     this.model.save({}, {success: function (model, response, options) {
-                        model.set({'id': String(response.id)});
-                        app.collections.presets.set(model, {remove: false});
+                        that.model.set({'id': String(response.id)});
+                        app.collections.presets.set(that.model, {'remove': false});
                         that.ui.saveButton.button('reset');
                     }});
                 }

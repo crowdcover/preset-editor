@@ -15,11 +15,8 @@
                 <input type="text" id="fieldLabel" class="form-control" placeholder="Label" value="<%= label %>">
             </div>
             <% if (type === 'radio' || type === 'combo') { %>
-                <div class="form-group">
-                    <div class="col-md-4 form-group" id="options"></div>
-                    <div class="col-md-2 form-group" id="close"></div>
-                    <button type="button" id="addOption" class="btn btn-default">Add Option</button>
-                </div>
+                <div class="form-group" id="options"></div>
+                <button type="button" id="addOption" class="btn btn-default">Add Option</button>
             <% } %>
             <% if (type === 'check') { %>
 <!--                 <div class="form-group" id="check">

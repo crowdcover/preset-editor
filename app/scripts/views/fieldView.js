@@ -14,7 +14,8 @@ define([
 
             events: {
                 'click #addOption': 'clickAddOption',
-                'click #save': 'save'
+                'click #save': 'save',
+                'click .optionsClose': 'removeOption'
             },
 
             ui: {
@@ -36,18 +37,25 @@ define([
             },
 
             addOption: function (name) {
+                var $optionsRow = $('<div>').addClass('row')
+                    .appendTo(this.ui.options);
+
+                var $optionColumn = $('<div>').addClass('col-md-10')
+                    .appendTo($optionsRow);
 
                 var $input = $('<input />').addClass('form-control')
                     .addClass('fieldOption')
                     .attr('placeholder', 'Option')
                     .val(name)
-                    .appendTo(this.ui.options);
+                    .appendTo($optionColumn);
 
-                var $close = $('<button />').addClass('close')
+                var $optionsClose = $('<div>').addClass('col-md-1').appendTo($optionsRow)
+
+                var $close = $('<button />').addClass('optionsClose close')
                     .attr('type', 'button')
                     .attr('aria-hidden', 'true')
                     .html('&times;')
-                    .insertAfter($input);
+                    .appendTo($optionsClose);
             },
 
             onRender: function () {
@@ -93,22 +101,22 @@ define([
                 var previousAttributes = _.clone(this.model.attributes);
 
                 this.model.set(props);
-                //TODO: add if statement for 'check'   
-                // this.presetModel.addField(this.model, previousAttributes);
 
                 this.ui.saveButton.button('loading');
                 var that = this;
 
                 this.model.save({}, {success: function (model, response, options) {
-
-                    model.set('name', String(response.id));
-                    app.collections.fields.set(model, {'remove': false});
-                    that.presetModel.addField(model, previousAttributes);
+                    that.model.set('name', String(response.id));
+                    app.collections.fields.set(that.model, {'remove': false});
+                    that.presetModel.addField(that.model, previousAttributes);
                     that.ui.saveButton.button('reset');
                     app.modalRegion.close();
                 }
-            });
+                });
 
+            },
+            removeOption: function (event) {
+                $(event.target).parent().parent().remove();
             }
         });
     });
