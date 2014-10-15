@@ -15,10 +15,12 @@ define([
             template: _.template(searchViewTemplate),
 
             events: {
-                'click #add': 'addPreset'
+                'click #add': 'addPreset',
+                'click .deletePreset': 'deletePreset'
             },
 
             initialize: function () {
+                this.confirmMessage = 'Are you sure? This cannot be undone.';
             },
 
             templateHelpers: function () {
@@ -96,6 +98,22 @@ define([
                 // });
 
                 Backbone.history.navigate('add', {trigger: true});
+            },
+
+            getPreset: function (target) {
+                var $row = $(target).parents('tr');
+                var presetID = $row.data('presetid');
+                console.log(presetID);
+                return app.collections.presets.findWhere({'id': String(presetID)});
+            },
+
+            deletePreset: function (event) {
+                if (confirm(this.confirmMessage)) {
+                    var target = event.target;
+                    var presetModel = this.getPreset(target);
+                    $(target).parents('tr').addClass('hide');
+                    presetModel.destroy();
+                }
             }
         });
 });

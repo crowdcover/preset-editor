@@ -17,13 +17,15 @@
             <tr>
                 <th>Name</th>
                 <th>Primary Attribute</th>
-                <th>Action</th>
+                <th>Edit</th>
+                <th>Remove</th>
             </tr>
             <% for (var i=0; i<presets.models.length; i++) { %>
-            <tr data-key="" data-value="">
+            <tr data-presetid="<%= presets.models[i].attributes.id %>">
                 <td><%= presets.models[i].attributes.name %></td>
                 <td><%= _.keys(presets.models[i].attributes.tags) %></td>
-                <td><a href="/edit/<%= presets.models[i].id %>" class="btn btn-primary editField" ><span class="glyphicon glyphicon-edit"></a>
+                <td><a href="/edit/<%= presets.models[i].id %>" class="btn btn-primary editPreset" ><span class="glyphicon glyphicon-edit"></a>
+                <td><a href="" class="btn btn-danger deletePreset" ><span class="glyphicon glyphicon-remove"></a>
             </tr>
             <% } %>
         </tbody>
