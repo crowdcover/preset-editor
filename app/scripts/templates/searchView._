@@ -10,3 +10,22 @@
 <div class="row">
   <button type="button" class="btn btn-primary" id="add">Add New Preset</button>
 </div>
+
+<div class="row preset-list">
+    <table class="table table-condensed">
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <th>Primary Attribute</th>
+                <th>Action</th>
+            </tr>
+            <% for (var i=0; i<presets.models.length; i++) { %>
+            <tr data-key="" data-value="">
+                <td><%= presets.models[i].attributes.name %></td>
+                <td><%= _.keys(presets.models[i].attributes.tags) %></td>
+                <td><a href="/edit/<%= presets.models[i].id %>" class="btn btn-primary editField" ><span class="glyphicon glyphicon-edit"></a>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>

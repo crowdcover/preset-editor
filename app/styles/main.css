@@ -173,6 +173,11 @@ button.optionsClose {
     margin-left: 129px;
 }
 
+.preset-list {
+    margin-top: 25px;
+    text-align: left;
+}
+
 /* Custom page header */
 .header {
   border-bottom: 1px solid #e5e5e5;
