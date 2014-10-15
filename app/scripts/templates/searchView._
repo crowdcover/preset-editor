@@ -2,7 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Search for existing Presets</div>
         <div class="panel-body">
-          <input type="text" class="form-control" id="searchPreset" placeholder="Search">
+          <input type="text" class="form-control" id="searchPreset" placeholder="Search for a name or an attribute">
         </div>
     </div>
 </div>

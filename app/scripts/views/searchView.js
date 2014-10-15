@@ -22,7 +22,6 @@ define([
             },
 
             templateHelpers: function () {
-                console.log('presets', app.collections.presets);
                 var presets = app.collections.presets;
                 return {
                     'presets': presets
