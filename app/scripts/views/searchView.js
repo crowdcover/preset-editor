@@ -36,40 +36,54 @@ define([
             onRender: function () {
 
                 // Instantiate Bloodhound.
-                var preset = new Bloodhound({
-                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-                    queryTokenizer: Bloodhound.tokenizers.whitespace,
-                    local: $.map(app.collections.presets.models, function(preset) { return {value: preset.attributes.name}; })
-                });
+                // var preset = new Bloodhound({
+                //     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                //     queryTokenizer: Bloodhound.tokenizers.whitespace,
+                //     local: $.map(app.collections.presets.models, function(preset) { return {value: preset.attributes.name}; })
+                // });
 
-                preset.initialize();
+                // preset.initialize();
 
-                this.ui.searchPreset.typeahead({
-                    hint: 'true',
-                    minLenght: 1
-                },
-                {
-                    name: 'preset',
-                    displayKey: 'value',
-                    source: preset.ttAdapter()
-                });
+                // this.ui.searchPreset.typeahead({
+                //     hint: 'true',
+                //     minLenght: 1
+                // },
+                // {
+                //     name: 'preset',
+                //     displayKey: 'value',
+                //     source: preset.ttAdapter()
+                // });
 
-                this.ui.searchPreset.on('typeahead:selected', function (event, datum) {
-                    var selectedPreset = app.collections.presets.findWhere({'name': datum.value});
-                    var editURL = 'edit/' + selectedPreset.get('id');
-                    Backbone.history.navigate(editURL, {'trigger': true});
-                });
+                // this.ui.searchPreset.on('typeahead:selected', function (event, datum) {
+                //     var selectedPreset = app.collections.presets.findWhere({'name': datum.value});
+                //     var editURL = 'edit/' + selectedPreset.get('id');
+                //     Backbone.history.navigate(editURL, {'trigger': true});
+                // });
                 
-                preset.initialize();
+                // preset.initialize();
 
-                this.ui.searchPreset.typeahead({
-                    hint: 'true',
-                    minLenght: 1
-                },
-                {
-                    name: 'preset',
-                    displayKey: 'value',
-                    source: preset.ttAdapter()
+                // this.ui.searchPreset.typeahead({
+                //     hint: 'true',
+                //     minLenght: 1
+                // },
+                // {
+                //     name: 'preset',
+                //     displayKey: 'value',
+                //     source: preset.ttAdapter()
+                // });
+                var oldSearchValue = '';
+                this.ui.searchPreset.keyup(function (event) {
+                    var query = this.value;
+                    if (query !== '') {
+                        if (oldSearchValue !== query) {
+                            oldSearchValue = query;
+                        }
+                        $('tr').addClass('hide');
+                        $('tr:Contains("' + query + '")').removeClass('hide');
+                    }
+                    else {
+                        $('tr').removeClass('hide');
+                    }
                 });
             },
             onClose: function () {
