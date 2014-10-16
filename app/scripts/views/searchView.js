@@ -103,7 +103,6 @@ define([
             getPreset: function (target) {
                 var $row = $(target).parents('tr');
                 var presetID = $row.data('presetid');
-                console.log(presetID);
                 return app.collections.presets.findWhere({'id': String(presetID)});
             },
 
@@ -111,8 +110,12 @@ define([
                 if (confirm(this.confirmMessage)) {
                     var target = event.target;
                     var presetModel = this.getPreset(target);
-                    $(target).parents('tr').addClass('hide');
-                    presetModel.destroy();
+                    presetModel.destroy({success: function (model, response) {
+                        console.log(response);
+                        if (response.status === 'success') {
+                            $(target).parents('tr').addClass('hide');
+                        }
+                    }});
                 }
             }
         });
