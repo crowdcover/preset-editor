@@ -35,43 +35,12 @@ define([
             },
 
             onRender: function () {
-
-                // Instantiate Bloodhound.
-                // var preset = new Bloodhound({
-                //     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-                //     queryTokenizer: Bloodhound.tokenizers.whitespace,
-                //     local: $.map(app.collections.presets.models, function(preset) { return {value: preset.attributes.name}; })
-                // });
-
-                // preset.initialize();
-
-                // this.ui.searchPreset.typeahead({
-                //     hint: 'true',
-                //     minLenght: 1
-                // },
-                // {
-                //     name: 'preset',
-                //     displayKey: 'value',
-                //     source: preset.ttAdapter()
-                // });
-
-                // this.ui.searchPreset.on('typeahead:selected', function (event, datum) {
-                //     var selectedPreset = app.collections.presets.findWhere({'name': datum.value});
-                //     var editURL = 'edit/' + selectedPreset.get('id');
-                //     Backbone.history.navigate(editURL, {'trigger': true});
-                // });
                 
-                // preset.initialize();
+                // Make jQuery contains selector case insensitive.
+                jQuery.expr[':'].contains = function (a, i, m) {
+                    return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+                };
 
-                // this.ui.searchPreset.typeahead({
-                //     hint: 'true',
-                //     minLenght: 1
-                // },
-                // {
-                //     name: 'preset',
-                //     displayKey: 'value',
-                //     source: preset.ttAdapter()
-                // });
                 var oldSearchValue = '';
                 this.ui.searchPreset.keyup(function (event) {
                     var query = this.value;
@@ -80,7 +49,7 @@ define([
                             oldSearchValue = query;
                         }
                         $('tr').addClass('hide');
-                        $('tr:Contains("' + query + '")').removeClass('hide');
+                        $('tr:contains("' + query + '")').toggleClass('hide');
                     }
                     else {
                         $('tr').removeClass('hide');
