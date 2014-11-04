@@ -84,7 +84,6 @@ define([
                 var hasTag = _.isEmpty(this.model.get('tags'));
                 if (settings.singleTag === true) {
                     if (hasTag === false) {
-                        // console.log(haveTags);
                         this.ui.addTagPanel.addClass('hide');
                     }
                 }

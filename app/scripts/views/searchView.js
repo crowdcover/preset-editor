@@ -111,11 +111,8 @@ define([
                     var target = event.target;
                     var presetModel = this.getPreset(target);
                     presetModel.destroy({success: function (model, response) {
-                        console.log(response);
-                        if (response.status === 'success') {
                             $(target).parents('tr').addClass('hide');
-                        }
-                    }});
+                        }});
                 }
             }
         });

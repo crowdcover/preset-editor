@@ -18,7 +18,6 @@ define([
                 var key = tag.get('key');
 
                 if (previous.hasOwnProperty('key')) {
-                    console.log('Previous Tag', previous);
                     existingTags = _.omit(existingTags, previous.key);
                 }
                 existingTags[key] = tag.get('value');
